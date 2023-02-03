@@ -20,7 +20,7 @@ internal class RedirectConsoleLog : IDisposable
         _streamWriter = new StreamWriter(stream, Encoding.UTF8);
         _streamReader = new StreamReader(stream);
         _consoleWriter = Console.Out;
-        Console.SetOut(Console.Out);
+        Console.SetOut(_streamWriter);
     }
 
     public void Dispose()
