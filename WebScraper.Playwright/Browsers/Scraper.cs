@@ -1,4 +1,37 @@
-﻿namespace WebScraper.Playwright.Browsers;
+﻿using System.Linq;
+using System.Text;
+
+namespace WebScraper.Playwright.Browsers;
+
+internal class RedirectConsoleLog : IDisposable
+{
+    private readonly TextWriter? _consoleWriter;
+    private readonly TextWriter _streamWriter;
+    private readonly StreamReader _streamReader;
+
+    public string? Text { get; private set; }
+
+    public RedirectConsoleLog(): this(new MemoryStream())
+    {
+    }
+
+    public RedirectConsoleLog(Stream stream)
+    {
+        _streamWriter = new StreamWriter(stream, Encoding.UTF8);
+        _streamReader = new StreamReader(stream);
+        _consoleWriter = Console.Out;
+        Console.SetOut(Console.Out);
+    }
+
+    public void Dispose()
+    {
+        Console.SetOut(_consoleWriter);
+        _streamReader.BaseStream.Seek(0, SeekOrigin.Begin);
+        Text = _streamReader.ReadToEnd();
+        _streamReader.Dispose();
+        _streamWriter.Dispose();
+    }
+}
 
 public abstract class Scraper : IScraper, IDisposable
 {
@@ -15,6 +48,8 @@ public abstract class Scraper : IScraper, IDisposable
         _logger = logger;
         _loggerFactory = loggerFactory;
     }
+
+    private
 
     protected async Task InitializeAsync(string browser)
     {
@@ -37,9 +72,21 @@ public abstract class Scraper : IScraper, IDisposable
             await Task.Yield();
             _logger?.LogDebug("Initializing Scrapper");
 
-            var exitCode = Microsoft.Playwright.Program.Main(new string[] { "install", "--with-deps", browser });
+            int exitCode;
+            var rd = new RedirectConsoleLog();
+            using (rd)
+            {
+                exitCode = Microsoft.Playwright.Program.Main(new string[] { "install", "--with-deps", browser });
+            }
 
-            if (exitCode != 0)
+            bool ignoreError = false;
+            if(!string.IsNullOrWhiteSpace(rd.Text))
+            {
+                _logger?.LogError(rd.Text);
+                ignoreError = rd.Text!.IndexOf("is already installed", StringComparison.OrdinalIgnoreCase) != -1;
+            }
+
+            if (exitCode != 0 && !ignoreError)
             {
                 _logger?.LogError("ChromiumScrapper initializing Playwright existed with code {exicode}", exitCode);
                 throw new InitializationException();
