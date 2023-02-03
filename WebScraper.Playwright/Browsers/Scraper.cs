@@ -28,8 +28,8 @@ internal class RedirectConsoleLog : IDisposable
         Console.SetOut(_consoleWriter);
         _streamReader.BaseStream.Seek(0, SeekOrigin.Begin);
         Text = _streamReader.ReadToEnd();
+        _streamWriter.Flush();
         _streamReader.Dispose();
-        _streamWriter.Dispose();
     }
 }
 
