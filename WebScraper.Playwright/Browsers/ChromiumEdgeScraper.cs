@@ -1,8 +1,8 @@
 ﻿namespace WebScraper.Playwright.Browsers;
 
-public sealed class ChromiumEdgeScrapper : Scrapper, IScraper
+public sealed class ChromiumEdgeScraper : Scraper, IScraper
 {
-    public ChromiumEdgeScrapper(ILoggerFactory? loggerFactory = null) : base(loggerFactory?.CreateLogger<ChromiumEdgeScrapper>(), loggerFactory)
+    public ChromiumEdgeScraper(ILoggerFactory? loggerFactory = null) : base(loggerFactory?.CreateLogger<ChromiumEdgeScraper>(), loggerFactory)
     { }
 
     public override Task InitializeAsync()

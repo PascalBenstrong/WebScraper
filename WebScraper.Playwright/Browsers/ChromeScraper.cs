@@ -1,6 +1,6 @@
 ﻿namespace WebScraper.Playwright.Browsers;
 
-public sealed class ChromeScraper : Scrapper, IScraper
+public sealed class ChromeScraper : Scraper, IScraper
 {
     public ChromeScraper(ILoggerFactory? loggerFactory = null) : base(loggerFactory?.CreateLogger<ChromeScraper>(), loggerFactory)
     { }

@@ -1,6 +1,6 @@
 ﻿namespace WebScraper.Playwright.Browsers;
 
-public abstract class Scrapper : IScraper, IDisposable
+public abstract class Scraper : IScraper, IDisposable
 {
     public bool IsInitialized { get; private set; }
     protected readonly ILogger? _logger;
@@ -10,7 +10,7 @@ public abstract class Scrapper : IScraper, IDisposable
 
     private IPlaywright? _playwright;
 
-    internal Scrapper(ILogger? logger = null, ILoggerFactory? loggerFactory = null)
+    internal Scraper(ILogger? logger = null, ILoggerFactory? loggerFactory = null)
     {
         _logger = logger;
         _loggerFactory = loggerFactory;

@@ -1,8 +1,8 @@
 ﻿namespace WebScraper.Playwright.Browsers;
 
-public sealed class FirefoxScrapper : Scrapper, IScraper
+public sealed class FirefoxScraper : Scraper, IScraper
 {
-    public FirefoxScrapper(ILoggerFactory? loggerFactory = null) : base(loggerFactory?.CreateLogger<FirefoxScrapper>(), loggerFactory)
+    public FirefoxScraper(ILoggerFactory? loggerFactory = null) : base(loggerFactory?.CreateLogger<FirefoxScraper>(), loggerFactory)
     { }
 
     public override Task InitializeAsync()

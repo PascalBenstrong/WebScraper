@@ -1,8 +1,8 @@
 ﻿namespace WebScraper.Playwright.Browsers;
 
-public sealed class WebkitScrapper : Scrapper, IScraper
+public sealed class WebkitScraper : Scraper, IScraper
 {
-    public WebkitScrapper(ILoggerFactory? loggerFactory = null) : base(loggerFactory?.CreateLogger<WebkitScrapper>(), loggerFactory)
+    public WebkitScraper(ILoggerFactory? loggerFactory = null) : base(loggerFactory?.CreateLogger<WebkitScraper>(), loggerFactory)
     { }
 
     public override Task InitializeAsync()
