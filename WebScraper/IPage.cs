@@ -16,6 +16,8 @@ public interface IPage
     Task ExecuteAsync(string expression, object? args = null);
 
     Task<IElement?> ExecuteElementAsync(string expression, object? args = null);
+    Task RouteAsync(WebScraper.IRouteHandler handler);
+    Task UnrouteAsync(Func<string, bool> url);
 
 }
 

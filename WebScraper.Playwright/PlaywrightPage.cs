@@ -1,4 +1,6 @@
-﻿namespace WebScraper.Playwright;
+﻿using Microsoft.Playwright;
+
+namespace WebScraper.Playwright;
 
 internal sealed class PlaywrightPage : IPage
 {
@@ -116,5 +118,23 @@ internal sealed class PlaywrightPage : IPage
         if (handle is not IElementHandle elementHandle) return null;
 
         return new Element(elementHandle);
+    }
+
+    public async Task RouteAsync(WebScraper.IRouteHandler handler)
+    {
+
+        var _handler = _Handler(handler);
+        await _page.RouteAsync(handler.CanRoute, _handler);
+        handler.Unlink(() => _page.UnrouteAsync(handler.CanRoute, _handler));
+
+        static Func<Microsoft.Playwright.IRoute, Task> _Handler(WebScraper.IRouteHandler _handler)
+        {
+            return x => _handler.HandleRouteAsync(new RouteWrapper(x));
+        }
+    }
+
+    public Task UnrouteAsync(Func<string, bool> url)
+    {
+        return _page.UnrouteAsync(url);
     }
 }

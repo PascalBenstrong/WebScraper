@@ -1,4 +1,6 @@
-﻿namespace WebScraper.Playwright;
+﻿using Microsoft.Playwright;
+
+namespace WebScraper.Playwright;
 
 internal readonly struct Element : IElement
 {
